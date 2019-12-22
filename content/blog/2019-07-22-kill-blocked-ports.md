@@ -1,21 +1,70 @@
 ---
-title: Cupcakes
-tags: cupcakes, baking
-date: 2019-09-25
+title: Kill Blocked Ports
+tags: gatsbyjs, reactjs, commandline
+date: 2019-07-22
 excerpt: Cupcake ipsum dolor. Sit amet pastry cake toffee carrot cake. Cheesecake candy I love dragée cake jelly-o pie. Cheesecake sesame snaps danish lemon drops sesame snaps sugar plum cupcake powder. Cookie sweet wafer. Jelly chocolate cake dragée candy canes halvah.
-hero: cupcakes.jpg
+hero: stop.jpg
 ---
 
-# Cupcake ipsum dolor.
+So you are working hard on your new [Gatsby](https://www.gatsbyjs.org/) site and fire up the development server.
 
-Sit amet pastry cake toffee carrot cake. Cheesecake candy I love dragée cake jelly-o pie. Cheesecake sesame snaps danish lemon drops sesame snaps sugar plum cupcake powder. Cookie sweet wafer. Jelly chocolate cake dragée candy canes halvah.
+**FAIL!**. You are presented with the console error message:
 
-Soufflé marzipan pastry topping cheesecake. Jelly marshmallow jelly-o lollipop cake. Candy dragée sweet roll dessert marshmallow. Biscuit apple pie sweet roll candy canes sweet roll sweet chupa chups pudding marshmallow. Brownie croissant biscuit. Ice cream pastry powder wafer carrot cake cotton candy jujubes jelly beans jelly.
+```
+Something is already running at port 8000
+Would you like to run the app at another port instead? [Y/n]
+```
 
-## Cake lollipop muffin cake lemon drops.
+The cause is that a process did not fully close, or you terminated a terminal window without exiting the command.
 
-Pudding chupa chups pudding gummies sweet sugar plum candy canes gummi bears. Dessert cake soufflé cupcake gingerbread. Cake lemon drops oat cake danish jelly-o icing. Caramels ice cream pudding jujubes donut. Gummies pudding cookie bear claw jujubes lollipop fruitcake muffin. Chupa chups lemon drops cupcake candy I love. Muffin I love oat cake icing candy canes ice cream. Lemon drops marshmallow liquorice wafer caramels.
+## What To Do
 
-I love cake soufflé sweet roll sugar plum powder. Tiramisu I love carrot cake. Sugar plum sesame snaps sesame snaps cheesecake. Powder cookie carrot cake tiramisu liquorice carrot cake marzipan gummi bears donut. Lemon drops tart I love toffee I love liquorice sweet roll marzipan I love. Donut bonbon soufflé soufflé chocolate cake jelly. Candy canes ice cream sugar plum. Pie cake gingerbread lemon drops.
+_FYI. The fix below is geared toward MacOS or Ubuntu/Linux. It might work on Windows._
 
-Halvah I love marshmallow. Gummi bears tiramisu candy I love brownie I love. Chocolate cake wafer croissant. Halvah icing candy canes tart cake I love soufflé chupa chups. Tootsie roll candy canes candy canes dragée. Oat cake pastry topping jelly beans I love tootsie roll. I love candy jelly donut dessert dessert dessert pie marzipan.
+The workaround is simple.
+
+- Exit the startup.
+- Enter the following at the command prompt:
+
+`kill -9 $(lsof -t -i:8000)`
+
+Cool all fixed. But, do you want to search out this command every time this happens?
+
+**NO**, of course not.
+
+**Solution**: Create a command alias in your favorite terminal. In [ZSH](https://ohmyz.sh/) open your `zshrc` file and add the following alias:
+`alias k8="kill -9 $(lsof -t -i:8000)"`
+
+Now, the next time this happens, escape out of the develop script and enter `k8`. All done.
+
+## All fixed, sort of.
+
+The alias command only responds to one situation, and one port number. What about the Gatsby serve command (port 9000), or Create-React-App (port 3000)? You will have to create an alias for each situation. There has to be a more productive way.
+
+The answer is to create a shell script.
+Create the below script:
+```
+#!/bin/bash
+
+#styles
+VP_RED='\033[01;31m'
+
+# Update default core install
+echo -e "${VP_RED}KILLING the SPECIFIED PORT"
+kill $(lsof -t -i:$1)
+```
+
+A couple of note:
+
+- The styles line `VP_RED='\033[01;31m'` only makes the command red in the terminal window.
+- The `echo` line initiates the style.
+- The most import part is the last line, which is the command that kills the port.
+- The name of the file will be the command you type. In my case, `kport`.
+- Make this file executable: `chmod +x kport`
+- Place in the user's path.
+
+In my case, I have added to `/bin` and named the file `kport`.
+So, when you execute the file, remember to include a port number which you want to kill, as an argument (i.e.):
+`kport 8000`
+
+DONE! I hope this helps. Have a great day.
