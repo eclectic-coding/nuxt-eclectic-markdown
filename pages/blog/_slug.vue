@@ -4,7 +4,7 @@
       {{ post.attributes.title }}
     </h1>
     <h2 class="subtitle">
-      {{ post.attributes.date }}
+      {{ parseDate(post.attributes.date) }}
     </h2>
     <div class="columns">
       <div class="column is-half is-offset-one-quarter">
@@ -37,6 +37,12 @@ export default {
   head () {
     return {
       title: this.post.attributes.title
+    }
+  },
+  methods: {
+    parseDate (date) {
+      const postDate = new Date(date)
+      return postDate.toDateString()
     }
   }
 }

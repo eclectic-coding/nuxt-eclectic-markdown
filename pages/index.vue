@@ -1,8 +1,5 @@
 <template>
   <div class="container">
-    <h1 class="title">
-      Blog Posts
-    </h1>
     <section class="posts">
       <div v-for="post in posts" :key="post.attributes.title" class="columns">
         <div class="column is-one-quarter">
@@ -21,7 +18,7 @@
           </p>
           <div class="content">
             <p>{{ post.attributes.excerpt }}</p>
-            <p>{{ post.attributes.date }}</p>
+            <p>{{ parseDate(post.attributes.date) }}</p>
             <nuxt-link :to="post.path">
               Read
             </nuxt-link>
@@ -45,6 +42,10 @@ export default {
   methods: {
     imgSrc (post) {
       return require(`~/assets/images/blog/${post.attributes.hero}`)
+    },
+    parseDate (date) {
+      const postDate = new Date(date)
+      return postDate.toDateString()
     }
   }
 }
