@@ -28,6 +28,7 @@ module.exports = {
       "alignAttributesVertically": false,
     }],
     "template-curly-spacing" : "off",
-    indent : "off"
+    'semi': 0,
+    'baseIndent': 0
   }
 }
