@@ -2,7 +2,7 @@
 title: Kill Blocked Ports
 tags: gatsbyjs, reactjs, commandline
 date: 2019-07-22
-excerpt: Cupcake ipsum dolor. Sit amet pastry cake toffee carrot cake. Cheesecake candy I love dragée cake jelly-o pie. Cheesecake sesame snaps danish lemon drops sesame snaps sugar plum cupcake powder. Cookie sweet wafer. Jelly chocolate cake dragée candy canes halvah.
+excerpt: Have you been working on a new site and are unable to open a development server on the default port? This article helps you configure a script to work around this problem.
 hero: stop.jpg
 ---
 
